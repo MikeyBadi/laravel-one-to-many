@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use App\Post;
 use Illuminate\Support\Str;
 
@@ -18,7 +19,8 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id','desc')->get();
-        return view('admin.posts.index', compact('posts'));
+        $categories = Category::all();
+        return view('admin.posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -28,7 +30,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -37,7 +40,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         $data = $request->all();
         $new_post = new Post;
@@ -71,10 +74,12 @@ class PostController extends Controller
     public function edit($id)
     {
         $post= Post::find($id);
+        $categories = Category::all();
+
 
         if($post){
 
-            return view('admin.posts.edit', compact('post'));
+            return view('admin.posts.edit', compact('post','categories'));
         }
         abort(404, 'Fumetto non trovato');
     }
@@ -86,7 +91,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $data = $request->all();
         $data['slug'] = Post::generateSlug($data['title']);

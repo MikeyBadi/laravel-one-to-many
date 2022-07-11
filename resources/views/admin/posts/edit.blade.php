@@ -23,6 +23,18 @@
                   {{$post->content}}
                   </textarea>
                 </div>
+                <div class="mb-3">
+                    <select class="form-select form-select-lg mb-3" name="category_id">
+                        <option value="">Select the category</option>
+                        @foreach ($categories as $category)
+                        <option value="{{$category->id}}"
+                            @if ($category->id === old('category_id',$post->category ? $post->category->id : ''))
+                                selected
+                            @endif
+                            >{{$category->name}}</option>
+                        @endforeach
+                      </select>
+                </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

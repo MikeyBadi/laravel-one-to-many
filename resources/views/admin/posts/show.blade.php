@@ -5,6 +5,7 @@
     {{-- @dd($post) --}}
     <h1>Title: {{$post->title}}</h1>
     <p>Content: {{$post->content}}</p>
+    <p>Category: {{!empty($post->category) ? $post->category->name : '-'}}</p>
     <a class="btn btn-success" href="{{route('admin.posts.index', $post)}}">Torna indietro</a>
     <a class="btn btn-primary" href="{{ route('admin.posts.edit',$post)}}">Edit</a>
     <form class="d-inline"
